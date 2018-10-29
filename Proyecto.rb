@@ -96,6 +96,7 @@ def registro_libros(cola_autores)
         siguiente: nil,
         autor: autor
     }
+    
     pilaautor = {
         nombre: autor,
         tope: elementolibro,
@@ -229,19 +230,38 @@ end
 
 def registro_ventas(cola_autores, cola_ventas)
     puts '¿Cuántos libros desea adquirir?'
-    yovi = gets.chomp.to_i
-    for j in 1..yovi 
+    vent = gets.chomp.to_i
+    total = 0
+    
+    for j in 1..vent 
         puts 'Ingrese el código ISBN'
         code = gets.chomp.to_i 
         a = buscar_libro(cola_autores,code)
+
         if a == nil
             puts 'Este libro no existe'
         elsif a[:existencias] < 1
             puts 'No quedan existencias de este ejemplar'
         else
+            puts a[:nombre]
+            puts "el precio es:"
+            total = total + a[:precio]
+            puts a[:precio]      
+            puts "venta realizada"
         end
+        gets 
     end
+
+    puts " "
+    puts "total: "
+    puts "Q.#{total}"
+    gets
+
+
+
 end
+
+
 
 def listado_libros(cola_autores)
     a = cola_autores[:tope]
@@ -278,7 +298,7 @@ end
 
 
 begin
-    puts 'Bienvenido a la base de datos "Ruby Bookstore"'
+    puts 'Bienvenido a la base de datos "biblioteca landivar"'
     puts 'Administración de libros'
     puts ' 1. Registro de nuevos libros'
     puts ' 2. Registro de autores'
@@ -286,6 +306,8 @@ begin
     puts ' 4. Listado de autores'
     puts ' 5. Buscar libro'
     puts ' 6. Buscar autor'
+    puts " "
+    puts " "
     puts 'Control de ventas'
     puts ' 7. Registrar una venta'
     puts ' 8. Buscar una venta'
@@ -307,13 +329,13 @@ begin
     elsif n == 6
         ingreso_buscar_autor(cola_autores)
     elsif n == 7
-
+        registro_ventas(cola_autores,cola_ventas) 
     elsif n == 8
 
     elsif n == 9
 
     elsif n == 10
-        puts 'Que tenga un buen dia'
+        puts 'adios'
     else
         puts 'Opcion invalida'
     end
