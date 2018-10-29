@@ -10,6 +10,7 @@ cola_autores = {
 cola_ventas = {
     tope: nil,
     fondo: nil,
+    vacia: true,
     max: 20
 }
 
@@ -228,7 +229,8 @@ def ingreso_buscar_autor(cola_autores)
 end
 
 
-def registro_ventas(cola_autores, cola_ventas)
+
+def registro_ventas(cola_autores, cola_ventas,conty)
     puts '¿Cuántos libros desea adquirir?'
     vent = gets.chomp.to_i
     total = 0
@@ -253,14 +255,68 @@ def registro_ventas(cola_autores, cola_ventas)
     end
 
     puts " "
-    puts "total: "
+    puts "subtotal: "
+    puts "Q.#{total}"
+    
+    if vent == 3
+        subtotal = total*0.10
+        total = total - subtotal
+    end
+    if vent > 3
+        subtotal = total*0.20
+        total = total - subtotal
+    end
+    if vent < 3
+        subtotal = total*0.05
+        total = total - subtotal
+    end
+
+
+    puts " "
+    puts "total con descuento: "
     puts "Q.#{total}"
     gets
 
+        if cola_ventas[:vacia] = true
+          elemento = {
+            ISBN: conty,
+            libro: a,
+            total: total,
+            siguiente: nil
+          }
+          
+          cola_ventas[:tope] = elemento
+          cola_ventas[:fondo] = elemento
+          cola_ventas[:vacia] = false
 
+
+        else
+
+          elemento = {
+            ISBN: conty,
+            libro: a,
+            total: total,
+            siguiente: nil
+          }
+
+          aux = cola_ventas[:fondo]
+          aux[:siguiente] = elemento
+          elemento[:siguiente] = nil
+
+          cola[:fondo] = elemento
+          cola[:tamaño] = cola[:tamaño] + 1
+        end
+    conty = conty +1
+end
+
+def ver_venta(cola_autores,cola_ventas)
 
 end
 
+
+def buscar_venta(cola_autores,cola_ventas)
+    
+end
 
 
 def listado_libros(cola_autores)
@@ -296,7 +352,7 @@ def listado_autores(cola_autores)
 end 
 
 
-
+conty=1
 begin
     puts 'Bienvenido a la base de datos "biblioteca landivar"'
     puts 'Administración de libros'
@@ -329,16 +385,14 @@ begin
     elsif n == 6
         ingreso_buscar_autor(cola_autores)
     elsif n == 7
-        registro_ventas(cola_autores,cola_ventas) 
+        registro_ventas(cola_autores,cola_ventas,conty) 
     elsif n == 8
-
+        buscar_venta(cola_autores,cola_ventas)#falta
     elsif n == 9
-
+        ver_venta(cola_autores,cola_ventas)
     elsif n == 10
-        puts 'Feliz Dia a sido un gusto atenderle!'
+        puts 'adios'
     else
         puts 'Opcion invalida'
     end
 end while n != 10
-
-   
