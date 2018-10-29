@@ -335,7 +335,7 @@ begin
     elsif n == 9
 
     elsif n == 10
-        puts 'adios'
+        puts 'Feliz Dia a sido un gusto atenderle!'
     else
         puts 'Opcion invalida'
     end
