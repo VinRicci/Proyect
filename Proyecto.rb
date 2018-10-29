@@ -340,3 +340,26 @@ begin
         puts 'Opcion invalida'
     end
 end while n != 10
+
+    def insertar(cola, valor)
+  if vacia?(cola)
+    elemento = {
+      valor: valor,
+      posicion: 0,
+      siguiente: nil
+    }
+    cola[:tope] = elemento
+    cola[:final] = elemento
+  else
+    elemento = {
+      valor: valor,
+      posicion: cola[:size],
+      siguiente: nil
+    }
+    elemento_final = cola[:final]
+    elemento_final[:siguiente] = elemento
+
+    cola[:final] = elemento
+  end
+  cola[:size] += 1# cola[:size] = cola[:size] + 1
+end
