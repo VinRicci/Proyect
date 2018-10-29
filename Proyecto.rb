@@ -96,6 +96,7 @@ def registro_libros(cola_autores)
         siguiente: nil,
         autor: autor
     }
+    
     pilaautor = {
         nombre: autor,
         tope: elementolibro,
@@ -275,10 +276,52 @@ def listado_autores(cola_autores)
     puts table
 end 
 
+def registrar_una_venta(cola_ventas)
+
+        if llena?(cola_ventas) == true
+            puts 'Su cola de autores ya esta llena'
+        else           
+            puts 'Ingrese nombre del autor'
+            nombre = gets.chomp
+
+            a = buscar(cola_autores,nombre,:nombre)
+            if a != nil
+                puts 'Este autor ya existe'            
+                return
+            end
+    
+            pilaautor = {
+                nombre: nombre,
+                tope: nil,
+                siguiente: nil
+            }
+    
+            a = cola_autores[:tope]
+            begin
+                if a == nil
+                    cola_autores[:tope] = pilaautor
+                    cola_autores[:fondo] = pilaautor
+                    break
+                elsif a[:nombre] == nombre
+                    puts 'Este nombre ya existe'
+                    break
+                elsif a[:siguiente] == nil
+                    a[:siguiente] = pilaautor
+                    cola_autores[:fondo] = pilaautor
+                    break
+                else
+                    a = a[:siguiente]
+                end
+            end while a != nil
+        end
+    end
+
+end
+
 
 
 begin
-    puts 'Bienvenido a la base de datos "Ruby Bookstore"'
+    puts 'Bienvenido a la base de datos "biblioteca landivar"'
     puts 'Administración de libros'
     puts ' 1. Registro de nuevos libros'
     puts ' 2. Registro de autores'
@@ -286,6 +329,8 @@ begin
     puts ' 4. Listado de autores'
     puts ' 5. Buscar libro'
     puts ' 6. Buscar autor'
+    puts " "
+    puts " "
     puts 'Control de ventas'
     puts ' 7. Registrar una venta'
     puts ' 8. Buscar una venta'
@@ -307,13 +352,13 @@ begin
     elsif n == 6
         ingreso_buscar_autor(cola_autores)
     elsif n == 7
-
+        registrar_una_venta(cola_ventas) #aqui
     elsif n == 8
 
     elsif n == 9
 
     elsif n == 10
-        puts 'Que tenga un buen dia'
+        puts 'adios'
     else
         puts 'Opcion invalida'
     end
