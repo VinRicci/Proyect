@@ -14,6 +14,16 @@ cola_ventas = {
     max: 20
 }
 
+def limpiar_pantalla
+    system ('clear')
+end
+
+def titulo
+    puts 'RUBY BOOKSTORE'
+    puts '--------------'
+    puts ''
+end
+
 def size(cola)
     tamano = 0
     a = cola[:tope]
@@ -66,7 +76,9 @@ def buscar_libro(cola_autores, isbn)
 end
 
 def registro_libros(cola_autores)
-    puts 'Ingrese el ISBN:'
+    limpiar_pantalla 
+    titulo
+    puts 'Ingrese ISBN:'
     isbn = gets.chomp.to_i
 
     a = buscar_libro(cola_autores, isbn) 
@@ -74,17 +86,20 @@ def registro_libros(cola_autores)
         a[:existencias] += 1
         return
     else
-        puts 'Ingrese nombre del autor:'
+        puts 'Ingrese Nombre del Autor:'
         autor = gets.chomp
         if buscar(cola_autores,autor,:nombre) == nil && llena?(cola_autores) == true
-            puts 'Este autor no esta registrado y su cola ya esta llena'
+            puts ' -------------------'
+            puts '|AUTOR NO REGISTRADO|' 
+            puts '|COLA LLENA         |'
+            puts ' -------------------'
             return
         end
     end
 
-    puts 'Ingrese nombre del libro:'
+    puts 'Ingrese Nombre del Libro:'
     nombre = gets.chomp
-    puts 'Ingrese el precio:'
+    puts 'Ingrese Precio:'
     precio = gets.chomp.to_i
 
     a = cola_autores[:tope]
@@ -97,7 +112,6 @@ def registro_libros(cola_autores)
         siguiente: nil,
         autor: autor
     }
-    
     pilaautor = {
         nombre: autor,
         tope: elementolibro,
@@ -136,15 +150,18 @@ def registro_libros(cola_autores)
 end
 
 def registro_autores(cola_autores)
+    limpiar_pantalla
     if llena?(cola_autores) == true
-        puts 'Su cola de autores ya esta llena'
+        puts ' ------------------'
+        puts '|COLA AUTORES LLENA|'
+        puts ' ------------------'
     else
-        puts 'Ingrese nombre del autor'
+        puts 'Ingrese Nombre del Autor:'
         nombre = gets.chomp
 
         a = buscar(cola_autores,nombre,:nombre)
         if a != nil
-            puts 'Este autor ya existe'            
+            puts 'AUTOR YA REGISTRADO'            
             return
         end
 
@@ -161,7 +178,7 @@ def registro_autores(cola_autores)
                 cola_autores[:fondo] = pilaautor
                 break
             elsif a[:nombre] == nombre
-                puts 'Este nombre ya existe'
+                puts 'NOMBRE YA REGISTRADO'
                 break
             elsif a[:siguiente] == nil
                 a[:siguiente] = pilaautor
@@ -175,15 +192,17 @@ def registro_autores(cola_autores)
 end
 
 def ingreso_buscar_libro(cola_autores)
+    limpiar_pantalla
+    titulo
     rows = []
     if vacia?(cola_autores)
-        puts 'Su base de datos esta vacia'
-    else
-        puts 'Ingrese el ISBN del libro buscado:'
+        puts 'BASE DE DATOS VACIA'
+   else
+        puts 'Ingrese ISBN de Libro:'
         isbn = gets.chomp.to_i
         a = buscar_libro(cola_autores, isbn)
         if a == nil
-            puts 'Este libro no esta registrado'
+            puts 'LIBRO NO REGISTRADO'
         else
         rows << [a[:nombre], a[:existencias], isbn, a[:precio],a[:autor]]
         table = Terminal::Table.new :rows => rows 
@@ -194,10 +213,12 @@ def ingreso_buscar_libro(cola_autores)
 end
 
 def ingreso_buscar_autor(cola_autores)
+    limpiar_pantalla
+    titulo
     if vacia?(cola_autores) == true
-        puts 'Su base de datos esta vacia'
+        puts 'BASE DE DATOS VACIA'
     else
-        puts 'Ingrese nombre del autor: '
+        puts 'Ingrese Nombre del Autor: '
         nombreautor = gets.chomp
         elemento = {}
         aux = cola_autores[:tope]
@@ -229,33 +250,33 @@ def ingreso_buscar_autor(cola_autores)
 end
 
 
-
 def registro_ventas(cola_autores, cola_ventas,conty)
+    limpiar_pantalla
     puts '¿Cuántos libros desea adquirir?'
     vent = gets.chomp.to_i
     total = 0
     
     for j in 1..vent 
-        puts 'Ingrese el código ISBN'
+        puts 'Ingrese Código ISBN'
         code = gets.chomp.to_i 
         a = buscar_libro(cola_autores,code)
 
         if a == nil
-            puts 'Este libro no existe'
+            puts 'LIBRO NO REGISTRADO'
         elsif a[:existencias] < 1
-            puts 'No quedan existencias de este ejemplar'
+            puts 'No Quedan Existencias de este Ejemplar'
         else
             puts a[:nombre]
-            puts "el precio es:"
+            puts "Precio:"
             total = total + a[:precio]
             puts a[:precio]      
-            puts "venta realizada"
+            puts "VENTA REALIZADA"
         end
         gets 
     end
 
     puts " "
-    puts "subtotal: "
+    puts "Subtotal: "
     puts "Q.#{total}"
     
     if vent == 3
@@ -273,7 +294,7 @@ def registro_ventas(cola_autores, cola_ventas,conty)
 
 
     puts " "
-    puts "total con descuento: "
+    puts "Total con Descuento: "
     puts "Q.#{total}"
     gets
 
@@ -318,7 +339,6 @@ def buscar_venta(cola_autores,cola_ventas)
     
 end
 
-
 def listado_libros(cola_autores)
     a = cola_autores[:tope]
     rows = []
@@ -354,23 +374,27 @@ end
 
 conty=1
 begin
-    puts 'Bienvenido a la base de datos "biblioteca landivar"'
-    puts 'Administración de libros'
-    puts ' 1. Registro de nuevos libros'
-    puts ' 2. Registro de autores'
-    puts ' 3. Listado de libros'
-    puts ' 4. Listado de autores'
-    puts ' 5. Buscar libro'
-    puts ' 6. Buscar autor'
-    puts " "
-    puts " "
-    puts 'Control de ventas'
-    puts ' 7. Registrar una venta'
-    puts ' 8. Buscar una venta'
-    puts ' 9. Listado de ventas'
-    puts '10. Salir'
+    puts ''
+    puts 'RUBY BOOKSTORE'
+    puts '--------------'
+    puts ''
+    puts 'ADMINISTRACION DE LIBROS'
+    puts '  1. Registro de Nuevos Libros'
+    puts '  2. Registro de Autores'
+    puts '  3. Listado de Libros'
+    puts '  4. Listado de Autores'
+    puts '  5. Buscar Libro'
+    puts '  6. Buscar Autor'
+    puts ''
+    puts 'CONTROL DE VENTAS'
+    puts '  7. Registrar una Venta'
+    puts '  8. Buscar una Venta'
+    puts '  9. Listado de Ventas'
+    puts '  10. Salir'
+    puts ''
+    print 'Ingrese Opcion: '
 
-    n = gets.chomp.to_i
+    n = gets.to_i
 
     if n == 1
         registro_libros(cola_autores)
@@ -385,14 +409,20 @@ begin
     elsif n == 6
         ingreso_buscar_autor(cola_autores)
     elsif n == 7
-        registro_ventas(cola_autores,cola_ventas,conty) 
+        registro_ventas(cola_autores,cola_ventas, conty)  
     elsif n == 8
         buscar_venta(cola_autores,cola_ventas)#falta
     elsif n == 9
         ver_venta(cola_autores,cola_ventas)
     elsif n == 10
-        puts 'adios'
+        limpiar_pantalla
+        puts ' -------------------'
+        puts '|PROGRAMA FINALAZADO|'
+        puts ' -------------------'
     else
-        puts 'Opcion invalida'
+        limpiar_pantalla
+        puts ' ---------------'
+        puts '|OPCION INVALIDA|'
+        puts ' ---------------'
     end
 end while n != 10
